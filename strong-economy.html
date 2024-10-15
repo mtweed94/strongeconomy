@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Strong Economy</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #00a087; /* Seafoam Green */
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        header div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        header img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        nav {
+            background-color: #87ceeb; /* Sky Blue */
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 1000px;
+            background-color: white;
+        }
+        .step-form {
+            display: none;
+        }
+        .step-form.active {
+            display: block;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #00a087;
+            color: white;
+        }
+        .banner {
+            background-image: url('banner.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #00a087;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #00856b;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, input[type="text"], input[type="email"] {
+            padding: 8px;
+            margin: 8px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>
+        <img src="logo-placeholder.png" alt="Strong Economy Logo">
+        <h1>Strong Economy</h1>
+    </div>
+</header>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+</nav>
+
+<div class="banner"></div>
+
+<div class="container">
+    <h2>Welcome to Strong Economy</h2>
+    <p>We are dedicated to promoting economic growth and sustainability. Please fill out the form to learn more about our services and receive personalized recommendations.</p>
+
+    <!-- Multi-step Form -->
+    <form id="multiStepForm">
+        <!-- Step 1 -->
+        <div class="step-form active" id="step1">
+            <h3>Step 1: Basic Information</h3>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <button type="button" onclick="nextStep()">Next</button>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-form" id="step2">
+            <h3>Step 2: Filter by Category</h3>
+            
+            <!-- Accessibility Options -->
+            <label for="accessibility">Accessibility Options:</label><br>
+            <select id="accessibility" name="accessibility">
+                <option value="mental-impairments">Mental Impairments</option>
+                <option value="physical-impairments">Physical Impairments</option>
+            </select><br><br>
+
+            <!-- Type of Activity -->
+            <label for="activity">Type of Activity:</label><br>
+            <select id="activity" name="activity">
+                <option value="outdoor">Outdoor</option>
+                <option value="indoor">Indoor</option>
+                <option value="online">Online</option>
+                <option value="community">Community Events</option>
+            </select><br><br>
+
+            <!-- Postcode -->
+            <label for="postcode">Postcode:</label><br>
+            <input type="text" id="postcode" name="postcode" placeholder="Enter your postcode"><br><br>
+
+            <div id="filterResults"></div>
+
+            <button type="button" onclick="prevStep()">Back</button>
+            <button type="button" onclick="filterBusinesses()">Search</button>
+        </div>
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2024 Strong Economy</p>
+</footer>
+
+<script>
+    // JavaScript to handle multi-step form
+    let currentStep = 1;
+    
+    function nextStep() {
+        document.getElementById('step' + currentStep).classList.remove('active');
+        currentStep++;
+        document.getElementById('step' + currentStep).classList.add('active');
+    }
+
+    function prevStep() {
+        document.getElementById('step' + currentStep).classList.remove('active');
+        currentStep--;
+        document.getElementById('step' + currentStep).classList.add('active');
+    }
+
+    // Simulate filtering businesses from a database
+    function filterBusinesses() {
+        const accessibility = document.getElementById('accessibility').value;
+        const activity = document.getElementById('activity').value;
+        const postcode = document.getElementById('postcode').value;
+        const filterResults = document.getElementById('filterResults');
+
+        // Simulate fetching filtered business list based on inputs
+        const results = [
+            { name: "Business A", accessibility: "mental-impairments", activity: "indoor", postcode: "12345" },
+            { name: "Business B", accessibility: "physical-impairments", activity: "outdoor", postcode: "54321" },
+            { name: "Business C", accessibility: "mental-impairments", activity: "online", postcode: "12345" },
+        ];
+
+        // Filter results based on user inputs
+        const filteredResults = results.filter(business => 
+            business.accessibility === accessibility && 
+            business.activity === activity && 
+            business.postcode === postcode
+        );
+
+        // Display filtered results
+        filterResults.innerHTML = filteredResults.length > 0
+            ? filteredResults.map(result => `<p>${result.name}</p>`).join('')
+            : '<p>No results found.</p>';
+    }
+
+    document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert("Form submitted successfully!");
+    });
+</script>
+
+</body>
+</html>
